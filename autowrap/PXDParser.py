@@ -57,6 +57,7 @@ included classes and methods.
 
 def parse_class_annotations(node, lines):
     """ parses wrap-instructions inside comments below class def """
+    #import pdb; pdb.set_trace()
     start_at_line = node.pos[1]
     return _parse_multiline_annotations(lines[start_at_line:])
 
@@ -185,7 +186,8 @@ def _extract_type(base_type, decl):
     is_unsigned = hasattr(base_type, "signed") and not base_type.signed
     is_long = hasattr(base_type, "longness") and base_type.longness
     is_const = isinstance(base_type, Nodes.CConstTypeNode)
-    return CppType(base_type.name, template_parameters, is_ptr, is_ref, is_unsigned, is_long, is_const=is_const)
+    name = base_type.base_type.name if is_const else base_type.name
+    return CppType(name, template_parameters, is_ptr, is_ref, is_unsigned, is_long, is_const=is_const)
 
 
 class BaseDecl(object):
